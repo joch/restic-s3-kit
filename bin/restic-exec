@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ENV_FILE="/opt/restic/config/restic.env"
+RESTIC_BIN="/opt/restic/bin/restic"
+
+# Load config
+[ -f "$ENV_FILE" ] || { echo "Missing $ENV_FILE"; exit 1; }
+# shellcheck disable=SC1090
+source "$ENV_FILE"
+
+# Export secrets/creds so child inherits them
+export RESTIC_PASSWORD_FILE="${RESTIC_PASSWORD_FILE:-/opt/restic/config/password}"
+# Common S3 vars (export only if set)
+for v in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_S3_BUCKET_LOOKUP RESTIC_CACHE_DIR AWS_DEFAULT_REGION; do
+  [ -n "${!v-}" ] && export "$v"
+done
+export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+export AWS_EC2_METADATA_DISABLED="${AWS_EC2_METADATA_DISABLED:-true}"
+
+# Decide whether to inject -r (if user didn't provide one)
+add_repo_arg=1
+for arg in "$@"; do
+  case "$arg" in
+    -r|--repo|--repository|--repository-file) add_repo_arg=0; break ;;
+  esac
+done
+
+# If we need to inject -r, ensure RESTIC_REPOSITORY is set
+if (( add_repo_arg )); then
+  : "${RESTIC_REPOSITORY:?Set RESTIC_REPOSITORY in $ENV_FILE or pass -r/--repo manually}"
+  exec "$RESTIC_BIN" -r "$RESTIC_REPOSITORY" "$@"
+else
+  exec "$RESTIC_BIN" "$@"
+fi

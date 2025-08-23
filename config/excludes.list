@@ -1,0 +1,8 @@
+# Example excludes
+*.cache
+lost+found
+**/.DS_Store
+**/node_modules
+**/.venv
+*.log
+/srv/gotosocial/postgres

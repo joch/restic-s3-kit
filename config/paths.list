@@ -1,0 +1,4 @@
+# Add one path per line. Comments and blanks are ignored.
+/etc
+/home
+/srv

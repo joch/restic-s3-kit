@@ -1,0 +1,31 @@
+[Unit]
+Description=Restic backup
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+EnvironmentFile=/opt/restic/config/restic.env
+ExecStart=/opt/restic/bin/restic-run
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+
+UMask=0077
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectKernelLogs=true
+NoNewPrivileges=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/cache/restic
+SystemCallFilter=@system-service
+
