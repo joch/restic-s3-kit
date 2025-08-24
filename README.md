@@ -1,15 +1,16 @@
 # restic-s3-kit
 
-> Zero-fuss self-contained **restic** backups to any S3‑compatible storage.  
+> Zero-fuss self-contained **restic** backups to any S3‑compatible storage.
 
 ## Requirements
 - Linux with systemd
 - `curl`, `bunzip2`, `sha256sum`
+- Installed into `/opt/restic` - update scripts otherwise
 
 ## Install
 ```bash
-# 1) Deploy kit
-sudo rsync -a opt/restic/ /opt/restic/
+# 1) Deploy kit (git or download manually)
+sudo git clone https://github.com/joch/restic-s3-kit.git /opt/restic/
 
 # 2) Fetch the restic binary
 sudo /opt/restic/bin/download-restic.sh
