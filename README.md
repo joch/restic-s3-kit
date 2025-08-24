@@ -16,7 +16,7 @@ sudo git clone https://github.com/joch/restic-s3-kit.git /opt/restic/
 sudo /opt/restic/bin/download-restic.sh
 
 # 3) Copy sample configuration
-sudo cp /opt/restic/config.sample /opt/restic/config
+sudo cp -r /opt/restic/config.sample /opt/restic/config
 
 # 4) Configure: endpoint, keys, password, and paths
 
