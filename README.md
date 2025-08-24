@@ -15,19 +15,22 @@ sudo git clone https://github.com/joch/restic-s3-kit.git /opt/restic/
 # 2) Fetch the restic binary
 sudo /opt/restic/bin/download-restic.sh
 
-# 3) Configure: endpoint, keys, password, and paths
+# 3) Copy sample configuration
+sudo cp /opt/restic/config.sample /opt/restic/config
+
+# 4) Configure: endpoint, keys, password, and paths
 
 sudoedit /opt/restic/config/restic.env          # set S3 endpoint + keys
 sudoedit /opt/restic/config/password            # repo password (one line, mode 0600)
 sudoedit /opt/restic/config/paths.list          # one path per line
 
-# 4) (Optional) Initialize a brand-new repo
+# 5) (Optional) Initialize a brand-new repo
 sudo /opt/restic/bin/init.sh
 
-# 5) Sanity check
+# 6) Sanity check
 sudo /opt/restic/bin/preflight.sh
 
-# 6) Install units & start timers
+# 7) Install units & start timers
 sudo /opt/restic/bin/install.sh
 sudo systemctl enable --now restic-backup.timer restic-prune.timer restic-check.timer
 ```
