@@ -5,4 +5,3 @@ lost+found
 **/node_modules
 **/.venv
 *.log
-/srv/gotosocial/postgres
